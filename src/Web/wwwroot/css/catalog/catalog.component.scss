@@ -1,0 +1,316 @@
+@import '../_variables.scss';
+
+.esh-catalog {
+    $banner-height: 260px;
+
+    &-hero {
+        background-image: url($image-main_banner);
+        background-size: cover;
+        height: $banner-height;
+        width: 100%;
+    }
+
+    &-title {
+        position: relative;
+        top: $banner-height / 3.5;
+    }
+
+    $filter-height: 65px;
+
+    &-filters {
+        background-color: $color-brand;
+        height: $filter-height;
+    }
+
+    $filter-padding: .5rem;
+
+    &-filter {
+        -webkit-appearance: none;
+        background-color: transparent;
+        border-color: $color-brand-bright;
+        color: $color-foreground-brighter;
+        cursor: pointer;
+        margin-right: 1rem;
+        margin-top: .5rem;
+        min-width: 140px;
+        outline-color: $color-secondary;
+        padding-bottom: 0;
+        padding-left: $filter-padding;
+        padding-right: $filter-padding;
+        padding-top: $filter-padding * 3;
+
+        option {
+            background-color: $color-brand;
+        }
+    }
+
+    &-label {
+        display: inline-block;
+        position: relative;
+        z-index: 0;
+
+        &::before {
+            color: rgba($color-foreground-brighter, .5);
+            content: attr(data-title);
+            font-size: $font-size-xs;
+            margin-left: $filter-padding;
+            margin-top: $font-size-xs;
+            position: absolute;
+            text-transform: uppercase;
+            z-index: 1;
+        }
+
+        &::after {
+            background-image: url($image-arrow_down);
+            content: '';
+            height: 7px; //png height
+            position: absolute;
+            right: $filter-padding * 3;
+            top: $filter-padding * 5;
+            width: 10px; //png width
+            z-index: 1;
+        }
+    }
+
+    &-send {
+        background-color: $color-secondary;
+        color: $color-foreground-brighter;
+        cursor: pointer;
+        font-size: $font-size-m;
+        margin-top: -$filter-padding * 3;
+        transition: all $animation-speed-default;
+
+        &:hover {
+            background-color: $color-secondary-darker;
+            transition: all $animation-speed-default;
+        }
+    }
+
+    &-items {
+        margin-top: 1rem;
+    }
+
+    &-item {
+        margin-bottom: 1.5rem;
+        text-align: center;
+        width: 33%;
+        display: inline-block;
+        float: none !important;
+
+        @media screen and (max-width: $media-screen-m) {
+            width: 50%;
+        }
+
+        @media screen and (max-width: $media-screen-s) {
+            width: 100%;
+        }
+    }
+
+    &-thumbnail {
+        max-width: 370px;
+        width: 100%;
+    }
+
+    &-button {
+        background-color: $color-secondary;
+        border: 0;
+        color: $color-foreground-brighter;
+        cursor: pointer;
+        font-size: $font-size-m;
+        height: 3rem;
+        margin-top: 1rem;
+        transition: all $animation-speed-default;
+        width: 80%;
+
+        &.is-disabled {
+            opacity: .5;
+            pointer-events: none;
+        }
+
+        &:hover {
+            background-color: $color-secondary-darker;
+            transition: all $animation-speed-default;
+        }
+    }
+
+    &-name {
+        font-size: $font-size-m;
+        font-weight: $font-weight-semilight;
+        margin-top: .5rem;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    &-price {
+        font-size: 28px;
+        font-weight: 900;
+        text-align: center;
+
+        &::before {
+            content: '$';
+        }
+    }
+
+    &-thumbnail-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+}
+
+// Favorite heart component — lives inside catalog product cards
+.esh-favorite-heart {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.85);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    transition: transform $animation-speed-default, box-shadow $animation-speed-default;
+
+    @media screen and (max-width: $media-screen-m) {
+        width: 40px;
+        height: 40px;
+    }
+
+    @media screen and (max-width: $media-screen-s) {
+        width: 44px;
+        height: 44px;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $color-brand;
+        outline-offset: 2px;
+    }
+
+    &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    &__icon {
+        width: 24px;
+        height: 24px;
+        fill: none;
+        stroke: $color-favorite-outline;
+        stroke-width: 2;
+        transition: fill $animation-speed-default, stroke $animation-speed-default;
+
+        @media screen and (max-width: $media-screen-s) {
+            width: 28px;
+            height: 28px;
+        }
+    }
+
+    // Hovered (unfavorited)
+    &:hover &__icon {
+        stroke: $color-favorite;
+    }
+
+    // Favorited
+    &--favorited &__icon {
+        fill: $color-favorite;
+        stroke: none;
+    }
+
+    &--favorited:hover &__icon {
+        fill: $color-favorite-dark;
+    }
+
+    // Loading
+    &--loading {
+        pointer-events: none;
+    }
+
+    &--loading &__icon {
+        stroke: #999;
+        stroke-width: 2;
+        opacity: 0.5;
+        animation: esh-favorite-pulse 0.8s ease-in-out infinite;
+    }
+
+    // Disabled (anonymous)
+    &--disabled {
+        cursor: default;
+        opacity: 0.5;
+    }
+
+    &--disabled &__icon {
+        stroke: $color-favorite-disabled;
+        stroke-width: 2;
+        fill: none;
+    }
+
+    &--disabled:hover &__icon {
+        stroke: $color-favorite-disabled;
+    }
+
+    // Animation modifiers (applied/removed by JS)
+    &--bounce {
+        animation: esh-favorite-bounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    &--shrink {
+        animation: esh-favorite-shrink 0.2s ease-out;
+    }
+
+    &--error {
+        animation: esh-favorite-shake 0.4s ease-out;
+    }
+}
+
+// Login tooltip for anonymous users
+.esh-favorite-tooltip {
+    position: absolute;
+    top: 44px;
+    right: 0;
+    z-index: 2;
+    background: $color-background-darker;
+    color: $color-foreground-brighter;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: $font-size-s;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+
+    a {
+        color: $color-brand-bright;
+        text-decoration: underline;
+        font-weight: $font-weight-semibold;
+    }
+}
+
+// Keyframe animations
+@keyframes esh-favorite-bounce {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+@keyframes esh-favorite-shrink {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(0.8); }
+    100% { transform: scale(1); }
+}
+
+@keyframes esh-favorite-pulse {
+    0%   { opacity: 0.4; }
+    50%  { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+
+@keyframes esh-favorite-shake {
+    0%, 100% { transform: translateX(0); }
+    16%      { transform: translateX(-2px); }
+    33%      { transform: translateX(2px); }
+    50%      { transform: translateX(-2px); }
+    66%      { transform: translateX(2px); }
+    83%      { transform: translateX(-2px); }
+}
